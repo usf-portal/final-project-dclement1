@@ -1,0 +1,22 @@
+-- Create a view that displays how many missions each unit went on --
+SELECT
+mission.Mission_ID AS 'Mission ID',
+mission.Unit_ID AS 'Unit ID',
+-- create a new column, with the total number of missions each unit went on --
+COUNT(mission.Unit_ID) AS 'Total Missions'
+-- When the mission.Unit_ID is the same, count 1, when it is distinct stop counting for this unit? --
+SUM(
+    CASE WHEN mission.Unit_ID = mission.Unit_ID then 1
+    ELSE 0 END
+units.Country AS 'Unit Country',
+units.Airforce AS 'Unit Airforce'
+
+FROM usf_dclement.Mission AS mission
+    -- join mission table to mission_unit table --
+INNER JOIN usf_dclement.Mission_Unit AS Mission_Unit
+    ON mission.Mission_ID = Mission_Unit.Mission_Mission_ID
+    -- join mission_unit table to unit table --
+INNER JOIN usf_dclement.Units AS units
+    ON Mission_Mission_ID = units.Mission_ID
+    -- Group by Unit --
+GROUP BY mission.Unit_ID

@@ -1,0 +1,32 @@
+-- create a view to display information about units and what ordinance they used in specific target locations --
+SELECT
+mission.Mission_ID AS 'Mission ID',
+mission.Unit_ID AS 'Unit ID',
+units.Country AS 'Unit Country',
+units.Airforce AS 'Unit Airforce',
+ordinance.High_Explosives_Weight_Tons AS 'High Explosive Weight (tons)',
+ordinance.Incendiary_Devices_Weight_Tons AS 'Incendiary Devices Weight (tons)',
+ordinance.Fragmentation_Devices_Weight_Tons AS 'Fragmentation Devices Weight (tons)',
+target.Target_Country AS 'Target Country',
+target.Target_City AS 'Target City',
+target.Target_Type AS 'Target Type',
+target.Target_Industry AS 'Target Industry'
+FROM usf_dclement.Mission AS mission
+    -- join mission table to mission_unit table --
+JOIN usf_dclement.Mission_Unit AS Mission_Unit
+    ON mission.Mission_ID = Mission_Unit.Mission_Mission_ID
+    -- join mission_unit table to unit table --
+JOIN usf_dclement.Units AS units
+    ON Mission_Mission_ID = units.Mission_ID
+    -- join the units table to the units_ordinance table --
+JOIN usf_dclement.Units_Ordinance AS Units_Ordinance
+    ON units.Unit_ID = Units_Ordinance.Units_Unit_ID
+    -- join the units_ordinance table to the ordinance table --
+JOIN usf_dclement.Ordinance AS ordinance
+    ON Units_Ordinance.Units_Unit_ID = ordinance.Unit_ID
+    -- join the ordinance table to the ordinance_on_target table --
+JOIN usf_dclement.Ordinance_On_Target AS ordinance_on_target
+    ON ordinance.Ordinance_ID = ordinance_on_target.Ordinance_Ordinance_ID
+    -- join the ordinance_on_target table to the target table --
+JOIN usf_dclement.Target AS target
+    ON ordinance_on_target.Target_Target_ID = target.Target_ID 
